@@ -1,31 +1,28 @@
-import cv2 as cv
-import utils
-import math
+from cv2 import CascadeClassifier, VideoCapture, namedWindow, resizeWindow, flip, imshow, waitKey, WINDOW_KEEPRATIO
 from cvzone.HandTrackingModule import HandDetector
-import time
-import rtmidi
+from rtmidi import MidiOut
+import utils
 
-hand_cascade = cv.CascadeClassifier('path/to/hand_cascade.xaml')
+hand_cascade = CascadeClassifier('path/to/hand_cascade.xaml')
 detector = HandDetector(staticMode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, minTrackCon=0.5)
 
 notesActive = 0
 numofFingers = 0
 
-cap = cv.VideoCapture(0)
+cap = VideoCapture(0)
 windowName = "Image"
 
-midiout = rtmidi.MidiOut()
+midiout = MidiOut()
 available_ports = midiout.get_ports()
-print(available_ports)
 
 if available_ports:
     midiout.open_port(1)
 else:
-    midiout.open_virtual_port("HackPompeyLmao")
+    midiout.open_virtual_port("HGTport")
 
-def main(hands, img):
+def main(hands):
   global numofFingers
-  global notesActive #???
+  global notesActive 
 
   if hands:
     if len(hands) == 2:
@@ -51,22 +48,19 @@ def main(hands, img):
       if fingers1count == 0 or fingers2count == 0:
         return
       
- 
-      
       numofFingers = fingers1count + fingers2count
 
       chord = utils.chordHandler(noteNumber, fingers1count, fingers2count)
       if chord == None or chord == []:
         return
+      
+      print(chord)
       midi = utils.midiConversion(chord)
 
-      print(notesActive, midi)
       if notesActive == midi:
         return
       elif midi != notesActive:
         if notesActive != 0:
-          # test = str(notesActive)
-          # cv.addText(img,test,(50, 50), cv.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 2)
           for note in notesActive: 
             utils.stopNote(note, midiout)
         for note in midi:
@@ -74,7 +68,6 @@ def main(hands, img):
         notesActive = midi
         return
       else:
-        print("error")
         return
 
 while True:
@@ -86,8 +79,8 @@ while True:
   finally:
     pass
 
-  cv.namedWindow(windowName, cv.WINDOW_KEEPRATIO)
-  cv.resizeWindow(windowName, 800, 500)
-  img = cv.flip(img, 1)
-  cv.imshow(windowName, img)
-  cv.waitKey(1)
+  namedWindow(windowName, WINDOW_KEEPRATIO)
+  resizeWindow(windowName, 800, 500)
+  img = flip(img, 1)
+  imshow(windowName, img)
+  waitKey(1)

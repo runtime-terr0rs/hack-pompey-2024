@@ -1,13 +1,10 @@
 import mingus.core.scales as scales
-import rtmidi
 
-# Note to midi conversion
 notesWithSharp = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 notesWithTrueFlat = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"]
 notesWithFlat = ["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"]
 notesWithFlat.reverse()
 
-print(notesWithTrueFlat)
 def midiConversion(NoteArray):
   root = 1
   rootMidi = 60
@@ -31,11 +28,7 @@ def midiConversion(NoteArray):
       midiNote = ((notesWithTrueFlat.index(note) + 1) - root) + rootMidi
       midiNotes.append(midiNote)
       rootMidi = 60
-    else:
-      print("The note was not recognized. Please enter a valid note.", note)
-    print(midiNote)
-    print("-------------------")
-    print(note)
+
   return midiNotes
 
 def scaleFinder(rootNote, numOfScale):
