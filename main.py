@@ -15,10 +15,14 @@ windowName = "Image"
 midiout = MidiOut()
 available_ports = midiout.get_ports()
 
-if available_ports:
+try:
+  if available_ports:
     midiout.open_port(1)
-else:
+  else:
     midiout.open_virtual_port("HGTport")
+except:
+  print("MIDI device not found")
+  pass
 
 def main(hands):
   global numofFingers
@@ -75,7 +79,7 @@ while True:
   hands, img2 = detector.findHands(img, draw = True, flipType = True)
 
   try:
-    main(hands, img2)
+    main(hands)
   finally:
     pass
 
