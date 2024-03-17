@@ -1,4 +1,4 @@
-from cv2 import CascadeClassifier, VideoCapture, namedWindow, resizeWindow, flip, imshow, waitKey, WINDOW_KEEPRATIO
+from cv2 import CascadeClassifier, VideoCapture, namedWindow, resizeWindow, flip, imshow, waitKey, WINDOW_KEEPRATIO, getWindowProperty, WND_PROP_VISIBLE
 from cvzone.HandTrackingModule import HandDetector
 from rtmidi import MidiOut
 import utils
@@ -73,7 +73,7 @@ def main(hands):
         return
       else:
         return
-
+  
 while True:
   success, img = cap.read()
   hands, img2 = detector.findHands(img, draw = True, flipType = True)
@@ -82,9 +82,13 @@ while True:
     main(hands)
   finally:
     pass
-
   namedWindow(windowName, WINDOW_KEEPRATIO)
   resizeWindow(windowName, 800, 500)
   img = flip(img, 1)
   imshow(windowName, img)
   waitKey(1)
+
+  if getWindowProperty(windowName, WND_PROP_VISIBLE) < 1:
+    break
+  if waitKey(1) & 0xFF == 27:  # 27 is the ESC key
+    break
