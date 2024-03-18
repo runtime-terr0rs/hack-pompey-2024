@@ -29,9 +29,11 @@ An electronic theremin that reads the user's hand gestures and positions and sen
 
 #### Music Theory
 
-Generally, a chord is formed by taking every odd number of notes from a scale. According to [Wikipedia](https://en.wikipedia.org/wiki/Scale_(music)), a musical scale is any set of musical notes ordered by fundamental frequency or pitch. An ascending scale is ordered by increasing pitch, and a descending scale is ordered by decreasing pitch.
-
-The root note, the starting note, is selected using the vertical position of your right hand. Therefore, to make a maj7 chord, two fingers on the left hand need to be up and four on the right hand.
+Generally, a chord is formed by taking every odd number of notes from a scale. According to [Wikipedia](https://en.wikipedia.org/wiki/Scale_(music)), a musical scale is any set of musical notes ordered by fundamental frequency or pitch. An ascending scale is ordered by increasing pitch, and a descending scale is ordered by decreasing pitch. Scales always start with a root note, the starting note, a C Major Scale would start with the note "C" and a G# Minor Scale would start with a "G#". The root note is selected using the vertical position of your right hand. Therefore, to make a maj7 chord, two fingers on the left hand need to be up and four on the right hand. 
+<p align="center">
+   <img src="https://github.com/runtime-terr0rs/hack-pompey-2024/blob/main/assets/maj7chord.png" alt="Image of two hands up, the left hand with the index and thumb raised, the right with all fingers except the ring finger raised.">
+</p>
+The three scales used in this application are Chromatic, Major, and Minor. The Chromatic scale contains all 12 notes (A through G#). The Major scale is known as the "Happy Scale," and the Minor scale is known as the "Sad Scale." 
 
 #### MIDI
 
@@ -41,7 +43,7 @@ We use [loopMIDI by Tobias Erichsen](https://www.tobias-erichsen.de/software/loo
 
 ## Design & Implementation Rationale
 
-   This was made by offloading a lot of the heavy work onto pre-existing libraries, and we also wrote out some problematic sections of code ahead of the competition. This was to give us ample time to finish the project during the competition. Given the scope of the project, we didn't want to overengineer the project by using version control or branches where it just wasn't needed. We used LiveShare (a VSCode extension) to have all of us work on the project during the day. We modularised the code by having all the utility functions in one file and having the main executable code in another.
+This was made by offloading a lot of the heavy work onto pre-existing libraries, and we also wrote out some problematic sections of code ahead of the competition. This was to give us ample time to finish the project during the competition. Given the scope of the project, we didn't want to overengineer the project by using version control or branches where it just wasn't needed. We used LiveShare (a VSCode extension) to have all of us work on the project during the day. We modularised the code by having all the utility functions in one file and having the main executable code in another.
 
 ## Future Work
 
