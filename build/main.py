@@ -3,16 +3,15 @@ from cvzone.HandTrackingModule import HandDetector
 from rtmidi import MidiOut
 import utils
 
+# Setup hand model
 hand_cascade = CascadeClassifier('path/to/hand_cascade.xaml')
 detector = HandDetector(staticMode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, minTrackCon=0.5)
 
-notesActive = 0
-numofFingers = 0
-windowHasBeenShown = False
-
+# Initiate camera capture
 cap = VideoCapture(0)
-windowName = "Image"
+windowName = "Hand-Gesture Theremin"
 
+# MIDI port selection
 midiout = MidiOut()
 available_ports = midiout.get_ports()
 
@@ -25,56 +24,61 @@ except:
   print("MIDI device not found")
   pass
 
+# Global variables
+notesActive = 0
+numofFingers = 0
+
+
 def main(hands):
   global numofFingers
   global notesActive 
 
-  if hands:
-    if len(hands) == 2:
+  if len(hands) != 2 or not hands:
+    return
 
-      leftHand, rightHand = utils.handOrientationFinder(hands)
-      if leftHand == [] or rightHand == []:
-        return
-      
-      handCoord = rightHand["lmList"][1][1] - 80
-      noteNumber = handCoord // 30
-      if noteNumber > 12 or noteNumber < 1:
-        return
-
-      fingers1 = detector.fingersUp(leftHand)
-      fingers2 = detector.fingersUp(rightHand)
-
-      fingers1count = fingers1.count(1)
-      fingers2count = fingers2.count(1)
-
-      if numofFingers != fingers1count + fingers2count:
-        notesActive = 0
-
-      if fingers1count == 0 or fingers2count == 0:
-        return
-      
-      numofFingers = fingers1count + fingers2count
-
-      chord = utils.chordHandler(noteNumber, fingers1count, fingers2count)
-      if chord == None or chord == []:
-        return
-      
-      print(chord)
-      midi = utils.midiConversion(chord)
-
-      if notesActive == midi:
-        return
-      elif midi != notesActive:
-        if notesActive != 0:
-          for note in notesActive: 
-            utils.stopNote(note, midiout)
-        for note in midi:
-          utils.playNote(note, midiout)
-        notesActive = midi
-        return
-      else:
-        return
+  leftHand, rightHand = utils.handOrientationFinder(hands)
+  if leftHand == [] or rightHand == []:
+    return
   
+  handCoord = rightHand["lmList"][1][1] - 80
+  noteNumber = handCoord // 30
+  
+  if noteNumber > 12 or noteNumber < 1:
+    return
+
+  fingers1count = detector.fingersUp(leftHand).count(1)
+  fingers2count = detector.fingersUp(rightHand).count(1)
+
+  if numofFingers != fingers1count + fingers2count:
+    notesActive = 0
+
+  if fingers1count == 0 or fingers2count == 0:
+    return
+  
+  numofFingers = fingers1count + fingers2count
+
+  chord = utils.chordHandler(noteNumber, fingers1count, fingers2count)
+  if chord == None or chord == []:
+    return
+  
+  print(chord)
+  midi = utils.midiConversion(chord)
+
+  if notesActive == midi:
+    return
+  elif midi != notesActive:
+    if notesActive != 0:
+      for note in notesActive: 
+        utils.stopNote(note, midiout)
+    for note in midi:
+      utils.playNote(note, midiout)
+    notesActive = midi
+    return
+  else:
+    return
+  
+  
+# Main program loop
 while True:
   success, img = cap.read()
   hands, img2 = detector.findHands(img, draw = True, flipType = True)
@@ -83,6 +87,7 @@ while True:
     main(hands)
   finally:
     pass
+  
   namedWindow(windowName, WINDOW_KEEPRATIO)
   resizeWindow(windowName, 800, 500)
   img = flip(img, 1)
