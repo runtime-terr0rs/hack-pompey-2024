@@ -39,7 +39,7 @@ The three scales used in this application are Chromatic, Major, and Minor. The C
 
 This application does not need a MIDI port; however, no sound will be produced. This application turns the chord into MIDI data and sends this data to a port. MIDI Ports can be detected by Digital Audio Workstations such as [Ableton](https://www.ableton.com/en/) or [CakeWalk](https://www.cakewalk.com/). These MIDI signals can then be turned into sounds using these applications.
 
-We use [loopMIDI by Tobias Erichsen](https://www.tobias-erichsen.de/software/loopmidi.html) to create the MIDI. The MIDI port's name has to be "HGTport"; if it is anything else, the application will not send MIDI signals.
+We use [loopMIDI by Tobias Erichsen](https://www.tobias-erichsen.de/software/loopmidi.html) to create the MIDI port. The MIDI port's name has to be "HGTport"; if it is anything else, the application will not send MIDI signals.
 
 ## Design & Implementation Rationale
 
@@ -74,7 +74,7 @@ This was written in [Python 3.8.10](https://www.python.org/downloads/release/pyt
 
 ### MIDI Ports
 
-We use [loopMIDI by Tobias Erichsen](https://www.tobias-erichsen.de/software/loopmidi.html) to create the MIDI. The MIDI port's name has to be "HGTport"; if it is anything else, the application will not send MIDI signals. 
+We use [loopMIDI by Tobias Erichsen](https://www.tobias-erichsen.de/software/loopmidi.html) to create the MIDI port. The MIDI port's name has to be "HGTport"; if it is anything else, the application will not send MIDI signals. 
 
 ## Built With
 
